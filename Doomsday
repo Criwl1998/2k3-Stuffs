@@ -1,0 +1,310 @@
+
+
+
+Make sure you check the service pack that you are installed with at Comp, this is just good information to know
+
+First make sure you change to NTLMv2
+
+1.	Start menu, all programs, administrative tools, local security policy
+2.	Go to Security Settings/Local Policies/Security Options
+3.	Then look for Network Security: LAN Manager authentication level
+4.	Open it up and then on the drop down arrow select “Send NTLMv2 response only\\refuse LM and NTLM” then click apply.
+5.	You will then be prompted with a question about a change, click yes and there ya go!
+
+1.  Change Passwords, Delete extra accounts, Disable guest account,
+Create a new user for admin logon & Start any large downloads
+  	
+Default Users: Administrator, Guest, (delete SUPPORT_388945a0 user)
+a.  Start, CMD (as admin), net user Administrator newpassword
+                        i.   Net user administrator abc123
+b.  Open compmgmt.msc, Local User and Groups, Users/Groups
+                        i.   Rename Administrator
+1.  wmic useraccount where name='Administrator' call rename name='CustomAdminName'
+                      ii.   Remove description
+1.  net user <> /usercomment: ””
+                    iii.   Disable password change
+1.  net user <> /passwordchg:no
+                      iv.   Change group name Switch user and administrator
+                        v.   User Cannot change password*
+                      vi.   Disable remote control*
+1.  under the remote control tab of a user uncheck box
+c.  Start, CMD (as admin), net user Guest /active:no
+d.  Start, CMD (as admin), net user username /delete
+                        i.   Net user student /delete
+ 
+ 
+2.  Change Local Security settings (run secpol.msc from start menu or right click on administrative tools and click open then go to local security policy)
+a.  Local Policies/Audit Policy
+                        i.   Audit account logon events (Success, Failure)
+                      ii.   Audit Account management (Success, Failure)
+                    iii.   Audit logon events (Success, Failure)
+                      iv.   Audit Privilege Use (Success, Failure)
+                        v.   Audit System events (Success, Failure)
+b.  Local Policies/User Rights Assignment
+                        i.   Access this computer from the network (Remove all groups
+                      ii.   Allow Logon Locally (Just Admin Group)
+                    iii.   Allow Logon Through Terminal (Remove all)
+c.  Local Policies/Security options
+                        i.   Domain member: require strong (enable) -May need to disable
+                      ii.   interactive logon: do not display last user name (enable)
+                    iii.   Shutdown: Clear Virtual memory pagefile (enable)
+ 
+ 
+3.  Check for malicious scripts or timed events
+  	Startup default: VboxTray, ctfmon
+a.  Windows key + R, msconfig, startup tab
+b.  Windows key + R, type shell:startup
+c.  Look through folders then (make report) Run this script to delete scheduled tasks and temp files, will also open folders to view the folders.
+  	VV Go through to check and make incident reports before deleting them VV
+explorer C:\Windows\Temp
+explorer C:\Windows\Prefetch
+explorer %temp%
+taskschd.msc
+schtasks /DELETE /TN * /F
+rd /S /Q C:\Windows\Temp\
+rd /S /Q C:\Windows\Prefetch\
+rd /S /Q %temp%\
+explorer C:\Windows\Temp
+explorer C:\Windows\Prefetch
+explorer %temp%
+ 
+        	pause
+d.  Start, CMD (as admin), regedit, then look in (these directories are called HKEY as well)
+                        i.   HKLM\SOFTWARE\microsoft\windows\currentversion\run
+                      ii.   HKLM\SOFTWARE\microsoft\windows\currentversion\runonce
+                    iii.   HKCU\SOFTWARE\microsoft\windows\currentversion\run
+e.  Run Software
+ 
+4.  	Check Services
+a.  Start, CMD (as admin), msconfig, services tab (Default Services Below)
+b.  Start, CMD (as admin), Services.msc
+c.  Disable uler, All Remote STUFF.
+*****RE-ENABLE REMOTE REGISTRY TO ADD ACTIVE DIRECTORY*****
+ 
+5.   	Uninstall suspicious and unwanted services,: telnet, remote registry, RDP, RPC, Secondary Login, Task Scheduapps
+ 
+Default programs: Microsoft .NET Framework 2.0, 3.0 SP2, 3.5 SP1, MBSA, MSXML 6 SP2 Oracle VM, Windows IE 8, Windows Server 2003 Service pack 2, Filezilla
+ 
+a.  Start, CMD (as admin), appwiz.cpl
+b.  Install antivirus, malwarebytes
+ 
+6.  Check firewall
+a.  Reset Firewall Start, CMD (as admin), netsh firewall reset
+b.  Start, CMD (as admin), firewall.cpl
+c.  Allow ICMP through firewall (custom, protocol=icmpv4)
+d.  Allow FTP through firewall, advanced network connection settings
+e.  May need the firewall rules tcp 80 (http) tcp 443 (HTTPS) tcp 20 (FTP DATA) tcp 21 (FTP)
+f.  Check hosts file (C:\Windows\System32\drivers\etc)
+# Copyright (c) 1993-1999 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a '#' symbol.
+#
+# For example:
+#
+#  	102.54.94.97 	rhino.acme.com      	# source server
+#   	38.25.63.10 	x.acme.com   	       # x client host
+ 
+127.0.0.1   	localhost
+g.  Flush DNS  
+                        i.   Disable network adapter then ipconfig /flushdns Ipconfig /registerdns then reenable network adapter
+ 
+ 
+7.  Install patches & Download any other software needed to scan and whats nots
+a.  Mount the catalog
+                        i.   Go to the ccd site, right click machine, insert cd from catalog.
+b.  Open wsusoffline folder (Wsusoffline.net get Wsusoffiline 9.1), go to client, update installer.
+c.  Other option
+                        i.   Download and install MBSA
+Open Powershell
+CD to MBSA install directory (default is C:\Program Files\Microsoft Baseline Security Analyzer 2)
+Run the command “.\MBSACLI /xmlout /unicode >updates.xml”
+Wait
+When it returns to an empty prompt, find the updates.xml file your MBSA install directory
+Open file in excel, when prompted click ok
+Scroll to the right and find the download URL column
+Copy entire column into text document and save as HTML file
+Open HTML file in Firefox with DownThemAll installed
+Right click, click “DownThemAll…”
+Shiftclick to select all, right click to check all selected
+Click start
+ 
+                      ii.   Find patch folder most likely in catalog, make a batch called update and put it in that folder then run it. The update batch contains
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = WindowsServer*.exe') DO ECHO %%G /z /u >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = Windows-en-us*.exe') DO ECHO %%G /passive /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = Windowsmedia6*.exe') DO ECHO %%G /passive /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = Windows2003*.exe') DO ECHO %%G /passive /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = IE*.exe') DO ECHO %%G /passive /norestart /update-no >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = msxml*.exe') DO ECHO %%G /passive /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = rvkroots*.exe') DO ECHO %%G /q >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = dotnet*.exe') DO ECHO %%G /passive /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = net*.exe') DO ECHO %%G /passive /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = msi*.exe') DO ECHO %%G /q /norestart >> patch.bat
+FOR /F "tokens=*" %%G IN ('dir /a-d /b = NDP*.exe') DO ECHO %%G /q >> patch.bat
+CALL patch.bat
+ 
+Also a secondary update script for .Cab files (Shouldn’t be needed for 2003)
+ 
+DISM /online /add-package /packagepath:<main updates folder> /loglevel:3
+ 
+ 
+ 
+8.  Set static arp tables
+a.  To view arp tables arp -a
+Netsh interface ip set address “local area connection” “IP ADDRESS” “MAC ADDRESS”
+ 
+ 
+9.  Disable smb2
+(a) 	Regedit: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+(i)          Add a new REG_DWORD key with the name of Smb2.
+(ii)        Value name Smb2
+(iii)   	Value type REG_DWORD
+0=disabled
+1=enabled
+Set the value to 0 to disable SMB2, or set it to 1 to re enable.
+ 
+ 
+10.  Other
+ 
+ 
+ 
+Disable Remote Registry
+Force Network Password encryption
+Msconfig
+Wsusoffline.net get Wsusoffiline 9.1
+ 
+FSUM
+To convert exe into md5 hashes In cmd (fsum.exe –md5 –js –r *.exe > sum.txt)
+ 
+ 
+ 
+Groups:
+
+Administrators
+Backup Operators
+Distributed COM Users
+Guests
+Network Configuration Operators
+Performance Logs Users
+Performance Monitors Users
+Print Operators
+Remote Desktop Users
+Replicator
+Users
+HelpServicesGroup
+TelnetClients
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Services:
+
+.NET Runtime Optimization Service v2.0.50727_x86
+Alerter
+Application Experience Lookup Service
+Application Layer Gateway Service
+Application Management
+ASP .NET State Service
+Automatic Updates
+Background Intelligent Transfer Service
+ClipBook
+Bnet Logon
+COM+ Event System
+COM+ System Application
+Computer Browser
+Crytographic Services
+DCOM Server Process Launcher
+DHCP Client
+Distributed File System
+Distributed Link Tracking Client
+Distributed Link Tracking Server
+Distributed Transaction Coordinator
+DNS Client
+Error Reporting Service
+Event Log
+File Replication
+FileZilla Server FTP server
+Help and Support
+HTTPSSL
+Human Interface Device Access
+IMAPI CD-Burning Com Service
+Indexing Service
+Intersite Messaging
+IPSEC Services
+Kerberos Key Distribution Center
+License Logging
+Logical Disk Manager
+Logical Disk Manager Administrative Service
+Messenger
+Microsoft Software Shadow Copy Provider
+Net Logon
+Net.Tcp Port Sharing Service
+NetMeeting Remote Desktop Sharing
+Network Connection
+Network DDE
+Network DDE DSDM
+Network Location Awareness (NLA)
+Network Provisioning Service
+NT LM Security Support Provider
+Performance Logs and Alerts
+Plug and Play
+Portable Media Serial Number Service
+Printer Spooler
+Protected Storage
+Remote Access Auto Connection Manager
+Remote Access Connection Manager
+Remote Desktop Help Session Manager
+Remote Procedure Call (RPC)
+Remote Procedure Call (RPC) Locator
+Remote Registry -Disable
+Removable Storage
+Resultant Set of Policy Provider
+Routing and Remote Access
+Secondary Logon
+Security Accounts Manager
+Server
+Shell Hardware Detection
+Smart Card
+Special Administration Console helper
+System Event Notification
+Task Scheduler
+TCP/IP NetBIOS Helper
+Telephony
+Telnet
+Terminal Services
+Terminal Services Session Directory
+Themes
+Uninterruptible Power Supply
+Upload Manager
+Virtual Disk Service
+VirtualBox Guest Additions Service
+Volume Shadow Copy
+WebClient
+Windows Audio
+Windows CardSpace
+Windows Firewall/Internet Connection Sharing (ICS)
+Windows Image Acquisition (WIA)
+Windows Installer
+Windows Management Instrumentation
+Windows Management Instrumentation Driver Extensions
+Windows Presentation Foundation Font Cache 3.0.0.0
+Windows Time
+Windows User Mode Driver Framework
+WinHTTP Web Proxy Auto-Discovery Service
+Wireless Configuration
+WMI Performance Adapter
+Workstation
+
