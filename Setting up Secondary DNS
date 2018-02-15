@@ -1,0 +1,13 @@
+Setting up secondary DNS
+
+1.	To begin, make sure DNS is installed, to do this, go into start, control panel, and add or remove programs.
+2.	Then click on add/remove windows components
+3.	After it is done installing click on Networking Services and click details, and make sure DNS is clicked
+4.	Then after that is done, click next and it will begin to install.
+5.	Then you have to configure the DNS, to do this, click on start, administrative tools, then go to DNS
+6.	Then you have to create the DNS, to begin, right click on DNS and choose connect to DNS server, then click this computer.
+7.	Afterwards, right click on the DNS that it made for your computer and click configure a DNS server, then go through the options by clicking next such as, create a forward lookup zone, then this server maintains the zone, then the zone name of whatever you like and the DNS file name, choose your update preferences and then finally put in the IP address of the DNS that you want to forward your queries to.  After this, you should be done with that portion of the DNS set up
+8.	Now you will right click on the zone that you made under Forward Lookup Zones, and choose properties.
+9.	Go to name servers and click add.
+10.	Then type the name of the Domain that you are connecting to and their ip address, after you do that, click apply and then ok. 
+11.	You are done!
