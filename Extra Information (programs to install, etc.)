@@ -1,0 +1,20 @@
+How to install with Wsusoffline
+
+1.	First run the generator.exe
+  a.	Choose all the things you want installed, make sure to include service packs
+2.	Then after that go to the client folder
+3.	Run the installer.exe 
+4.	After that you should be good to go! Might have to restart the computer however.
+
+Rider’s Program
+Make sure you have .net 3.5 installed, this should be installed from WsusOffline, if not just install it off of the internet!
+1.	Download from github.com/peewee2000/ProcessMonitorOSA
+2.	Download the legacy version for windows 2k3
+
+Have Malwarebytes installed
+1.	Just google Malwarebytes download and download off of their website, that easy!
+
+Have autoruns installed
+1.	Just google autoruns windows xp download, or something along those lines
+2.	Go to the docs.microsoft.com link and click download autoruns and autorunsc
+3.	Then after it is installed you can open it and see what is auto-running on your computer!
