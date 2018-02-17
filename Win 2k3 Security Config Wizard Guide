@@ -1,0 +1,67 @@
+		Settings that need to be in place!
+
+1.	Under server roles, make sure the only role that is set is File Server, all other roles should be disabled
+
+2.	The only client Features that should be active are the following
+  a.	Automatic Update Client
+    i.	Required Services: Background Intelligent Transfer Service, Automatic Updates
+  b.	DNS Client
+    i.	DNS Client
+  c.	DNS registration client
+    i.	DHCP Client
+  d.	Domain member
+    i.	Net Logon, Network Location Awareness, Windows Time
+  e.	Microsoft Networking client
+    i.	Workstation, TCP/IP NetBIOS helper
+
+3.	Required options used to administrate the server
+  a.	Application Experience lookup service
+    i.	Application experience lookup service
+  b.	Application installed from group policy
+    i.	Application management, windows installer, dns client
+  c.	Backup (NT or 3rd party)
+    i.	MS Software snapshot provider, volume snapshot
+  d.	Backup to local hardware
+    i.	Removable storage
+  e.	Error reporting
+    i.	Error reporting service
+  f.	Help and Support    
+    i.	Help and support
+  g.	Link tracking for user’s shortcuts
+    i.	Distributed link tracking client
+  h.	Local application installation
+    i.	Windows installer
+    i.	Shadow Copying
+    i.	MS Software snapshot provider, volume snapshot
+  j.	Time synchronization
+    i.	Windows time
+  k.	Web proxy auto-discovery
+    i.	DHCP client, WINHTTP web proxy auto-discovery service
+    l.  Windows firewall
+    i.	Windows Firewall (WF) / Internet Connection sharing (ICS)
+  m.	Windows user mode driver framework
+    i.	Windows user mode driver framework
+
+4.	Additional Services
+  a.	FileZilla Server FTP server
+  b.	Mozilla Maintenance Service
+  c.	Upload Manager
+
+5.	Unspecified services
+  a.	Do not change the startup mode of the service
+
+6.	Continue to click next until you get to open ports and approve applications
+  a.	Only allow ports used by FileZilla server FTP server (filezilla server.exe) and ports used by system rpc applications
+
+7.	Click next until you get to outbound authentication methods and disable all of them
+
+8.	Inbound authentication methods
+  a.	Disable “Computers that require LAN manager authentication” and leave the other option
+
+9.	Click next until you get to system audit policy
+  a.	Choose audit successful and unsuccessful activities
+
+10.	Keep clicking next until you get to security policy file name
+  a.	Here you can name it whatever you want, I named mine BasePolicy.xml
+
+11.	Then click apply now!
